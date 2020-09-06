@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class API::V1::ProductsController < API::APIController
-  before_action :set_product_item, only: [:update]
+  before_action :set_product_item, only: [:update, :destroy]
 
   def index
     products = Product.includes(:tags).all # includes to avoid N+1
@@ -25,6 +25,17 @@ class API::V1::ProductsController < API::APIController
   def update
     Product.transaction do
       unless @product.update(permited_params)
+        render_json_validation_error @product
+        return
+      end
+
+      render json: @product
+    end
+  end
+
+  def destroy
+    Product.transaction do
+      unless @product.touch(:discarded_at)
         render_json_validation_error @product
         return
       end
