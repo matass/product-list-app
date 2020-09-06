@@ -53,4 +53,21 @@ RSpec.describe API::V1::TagsController, type: :request do
       expect(parsed_data['id'].to_i).to eq(2)
     end
   end
+
+  describe 'DELETE /api/v1/tags/*' do
+    it 'softly deletes second tag' do
+      delete '/api/v1/tags/2', {
+        params: {
+          data: {
+            id: '2',
+            type: 'tags'
+          }
+        }
+      }
+
+      expect(response.status).to eq(200)
+
+      expect(parsed_data['attributes']['discarded_at']).not_to be_empty
+    end
+  end
 end

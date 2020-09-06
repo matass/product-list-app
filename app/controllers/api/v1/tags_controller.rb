@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class API::V1::TagsController < API::APIController
-  before_action :set_tag_item, only: [:update]
+  before_action :set_tag_item, only: [:update, :destroy]
 
   def index
     tags = Tag.all
@@ -25,6 +25,17 @@ class API::V1::TagsController < API::APIController
   def update
     Tag.transaction do
       @tag.update(permited_params)
+
+      render json: @tag
+    end
+  end
+
+  def destroy
+    Tag.transaction do
+      unless @tag.touch(:discarded_at)
+        render_json_validation_error @tag
+        return
+      end
 
       render json: @tag
     end
