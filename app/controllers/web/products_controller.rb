@@ -4,7 +4,7 @@ class Web::ProductsController < API::V1::ProductsController
   def index
     # Product.all.to_json({include: [:tags]}) has performance issue with
     # N+1 queries
-    @products = Product.all.includes(:tags).map do |p|
+    @products = Product.includes(:tags).map do |p|
       {
         id: p.id,
         name: p.name,
