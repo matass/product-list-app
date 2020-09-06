@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ProductTag, type: :model do
+RSpec.describe ProductsTag, type: :model do
   subject { described_class.new }
 
   context 'ProductTag model validation' do

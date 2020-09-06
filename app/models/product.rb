@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class Product < ApplicationRecord
-  has_many :product_tags
-  has_many :tags, through: :product_tags
+  has_many :products_tags
+  has_many :tags, through: :products_tags
 
   validates :name, uniqueness: true
   validates :price, presence: true
+
+  default_scope { where(discarded_at: nil) }
 
   accepts_nested_attributes_for :tags
 

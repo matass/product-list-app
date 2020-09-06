@@ -10,18 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_115617) do
-
-  create_table "product_tags", force: :cascade do |t|
-    t.integer "product_id"
-    t.integer "tag_id"
-    t.datetime "discarded_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_id", "tag_id"], name: "index_product_tags_on_product_id_and_tag_id", unique: true
-    t.index ["product_id"], name: "index_product_tags_on_product_id"
-    t.index ["tag_id"], name: "index_product_tags_on_tag_id"
-  end
+ActiveRecord::Schema.define(version: 2020_09_06_113800) do
 
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
@@ -31,6 +20,17 @@ ActiveRecord::Schema.define(version: 2020_08_24_115617) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_products_on_name", unique: true
+  end
+
+  create_table "products_tags", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "tag_id"
+    t.datetime "discarded_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id", "tag_id"], name: "index_products_tags_on_product_id_and_tag_id", unique: true
+    t.index ["product_id"], name: "index_products_tags_on_product_id"
+    t.index ["tag_id"], name: "index_products_tags_on_tag_id"
   end
 
   create_table "tags", force: :cascade do |t|
