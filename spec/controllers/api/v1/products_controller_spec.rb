@@ -124,4 +124,21 @@ RSpec.describe API::V1::ProductsController, type: :request do
       expect(parsed_data['relationships']['tags']['data'][0]['id']).to eq('2')
     end
   end
+
+  describe 'DELETE /api/v1/products/*' do
+    it 'softly deletes second product' do
+      delete '/api/v1/products/2', {
+        params: {
+          data: {
+            id: '2',
+            type: 'products'
+          }
+        }
+      }
+
+      expect(response.status).to eq(200)
+
+      expect(parsed_data['attributes']['discarded_at']).not_to be_empty
+    end
+  end
 end
