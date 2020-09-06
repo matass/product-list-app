@@ -7,4 +7,10 @@ Rails.application.routes.draw do
       resources :tags
     end
   end
+
+  namespace :web do
+    resources :products, only: [:index, :show] do
+      resources :tags, only: [:index, :show]
+    end
+  end
 end

@@ -12,14 +12,15 @@ class Product < ApplicationRecord
   accepts_nested_attributes_for :tags
 
   def tags=(tags)
-    tags_to_remove = self.tags.pluck(:title) - tags
+    product_tags = self.tags.pluck(:title)
+    tags_to_remove = product_tags - tags
 
     if tags_to_remove.any?
       self.tags.delete(Tag.find_by({ title: tags_to_remove }))
     end
 
     tags.each do |title|
-      next if self.tags.find_by({ title: title })
+      next if product_tags.include?(title)
 
       self.tags << Tag.find_or_create_by({ title: title })
     end
