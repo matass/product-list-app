@@ -9,20 +9,16 @@ class Product < ApplicationRecord
 
   default_scope { where(discarded_at: nil) }
 
-  accepts_nested_attributes_for :tags
-
   def tags=(tags)
-    product_tags = self.tags.pluck(:title)
-    tags_to_remove = product_tags - tags
-
-    if tags_to_remove.any?
-      self.tags.delete(Tag.find_by({ title: tags_to_remove }))
-    end
+    ProductsTag.where(product: self).destroy_all
 
     tags.each do |title|
-      next if product_tags.include?(title)
-
-      self.tags << Tag.find_or_create_by({ title: title })
+      ProductsTag.find_or_create_by(
+        {
+          product: self,
+          tag: Tag.find_or_create_by({ title: title })
+        }
+      )
     end
   end
 end
